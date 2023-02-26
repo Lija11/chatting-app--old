@@ -1,0 +1,11 @@
+.friendRequest {
+  padding: 30px;
+  border-radius: 10px;
+  height: 420px;
+  background: linear-gradient(145deg, #1e2024, #23272b);
+  /* background-color: #202020; */
+  box-shadow: 10px 10px 19px #1c1e22, -10px -10px 19px #262a2e;
+  overflow-y: scroll;
+  border-radius: 20px;
+  margin-top: 30px;
+}

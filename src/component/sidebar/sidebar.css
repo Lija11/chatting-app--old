@@ -1,0 +1,114 @@
+.sidebar {
+  /* background-color: #202020; */
+  background: linear-gradient(145deg, #1e2024, #23272b);
+  box-shadow: 10px 10px 19px #1c1e22, -10px -10px 19px #262a2e;
+  height: 900px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.profile h4 {
+  color: #c4cfde;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.profileImg {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden !important;
+  border-radius: 50%;
+}
+
+.imgUpload {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: red;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: wheat;
+  font-size: 20px;
+}
+
+.profileImg img {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 50% !important;
+}
+
+.sidebarIcons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+}
+
+/* .icon {
+  width: 46px;
+  height: 46px;
+  color: #c4cfde;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 65px;
+  transition: 0.4s;
+} */
+
+.icon {
+  color: #c4cfde;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 40px;
+  padding: 25px;
+  border-radius: 50%;
+}
+
+/* .icon:hover {
+  color: red;
+} */
+
+.logout {
+  margin-top: 190px;
+}
+
+.active {
+  color: red !important;
+  background-color: #000;
+  border-radius: 50%;
+}
+
+.ImgUploader {
+  /* background: linear-gradient(145deg, #1e2024, #23272b); */
+  background-color: red;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100vw;
+}
+
+.uploadBtn {
+  display: flex;
+}
+
+.sidebar .profileImg {
+  background: white;
+}
+
+/* .sidebar.registrationFrom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+} */
