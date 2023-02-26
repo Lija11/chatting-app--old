@@ -85,7 +85,7 @@ const UserList = () => {
           </picture>
           <div className="groupText">
             <h3>{item.name}</h3>
-            <p>{item.email}</p>
+            {/* <p>{item.email}</p> */}
           </div>
           <div className="groupBtn">
             {blockUser.includes(item.id + auth.currentUser.uid) ||
