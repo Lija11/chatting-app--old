@@ -17,6 +17,8 @@ const MyGroup = () => {
   const [groupList, setGroupList] = useState([]);
   const [showInfo, setShowInfo] = useState(false);
   const [memberRequest, setMemberRequest] = useState([]);
+  const [memberList, setMemberList] = useState([]);
+  const [showMemberList, setShowMemberList] = useState(false);
 
   useEffect(() => {
     const usersRef = ref(db, "createGroup");
@@ -38,7 +40,6 @@ const MyGroup = () => {
     onValue(usersRef, (snapshot) => {
       let array = [];
       snapshot.forEach((gitem) => {
-        // console.log(gitem.val());
         if (
           item.adminId == auth.currentUser.uid &&
           item.gid == gitem.val().gid
@@ -67,6 +68,26 @@ const MyGroup = () => {
     }).then(() => {
       remove(ref(db, "groupJoinRequest/" + item.key));
     });
+  };
+
+  let handleMember = (id) => {
+    setShowMemberList(true);
+    const gMemberRef = ref(db, "groupMember");
+    onValue(gMemberRef, (snapshot) => {
+      let array = [];
+      snapshot.forEach((item) => {
+        console.log("key", item.val());
+        if (id.gid == item.val().gid) {
+          array.push({ ...item.val(), key: item.key });
+        }
+      });
+      setMemberList(array);
+    });
+  };
+
+  let handleRemove = (item) => {
+    console.log("remove");
+    remove(ref(db, "groupMember/" + item.key));
   };
 
   return (
@@ -111,6 +132,34 @@ const MyGroup = () => {
             </div>
           ))}
         </>
+      ) : showMemberList ? (
+        <div className="groupBtn" style={{ marginRight: "10px" }}>
+          <button
+            onClick={() => setShowMemberList(false)}
+            className="searchBtn"
+          >
+            Back
+          </button>
+          {memberList.map((item) => (
+            <div className="groupItem">
+              <picture>
+                <img src={item.userPhoto} loading="lazy" />
+              </picture>
+              <div className="groupText">
+                <h3>{item.userName}</h3>
+                <p>{item.groupTag}</p>
+              </div>
+              <div className="groupBtn">
+                <button
+                  onClick={() => handleRemove(item)}
+                  className="searchBtn"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         groupList.map((item) => (
           <div className="groupItem">
@@ -130,7 +179,9 @@ const MyGroup = () => {
               </button>
             </div>
             <div className="groupBtn">
-              <button className="searchBtn">Member</button>
+              <button className="searchBtn" onClick={() => handleMember(item)}>
+                Member
+              </button>
             </div>
           </div>
         ))

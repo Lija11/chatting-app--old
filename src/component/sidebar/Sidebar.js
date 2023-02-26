@@ -110,7 +110,7 @@ const Sidebar = () => {
             <img src={auth.currentUser.photoURL} loading="lazy" />
           </picture>
           <div className="imgUpload">
-            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <i className="fa-solid fa-cloud-arrow-up"></i>
           </div>
         </div>
         <h4>{auth.currentUser.displayName}</h4>
