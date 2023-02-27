@@ -43,7 +43,7 @@ const Home = () => {
             <FriendRequest />
           </div>
           <div className="friends">
-            <Friends />
+            <Friends block="true" />
             <MyGroup />
           </div>
           <div className="userList">

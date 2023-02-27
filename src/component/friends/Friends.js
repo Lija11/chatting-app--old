@@ -10,7 +10,7 @@ import {
 } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
-const Friends = () => {
+const Friends = ({ block }) => {
   const db = getDatabase();
   const auth = getAuth();
 
@@ -69,9 +69,15 @@ const Friends = () => {
             <p>Hi Guys, Wassup!</p>
           </div>
           <div className="groupBtn">
-            <button onClick={() => handleBlock(item)} className="searchBtn">
-              Block
-            </button>
+            {block ? (
+              <button onClick={() => handleBlock(item)} className="searchBtn">
+                Block
+              </button>
+            ) : (
+              <button className="searchBtn">
+                <i className="fa-solid fa-message"></i>
+              </button>
+            )}
           </div>
         </div>
       ))}

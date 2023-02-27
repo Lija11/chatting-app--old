@@ -65,6 +65,7 @@ const MyGroup = () => {
       userName: item.userName,
       userPhoto: item.userPhoto,
       key: item.key,
+      adminName: auth.currentUser.displayName,
     }).then(() => {
       remove(ref(db, "groupJoinRequest/" + item.key));
     });
