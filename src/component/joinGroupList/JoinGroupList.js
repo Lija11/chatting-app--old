@@ -10,9 +10,13 @@ import {
 } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
+import { useDispatch } from "react-redux";
+import { activeChat } from "../../slices/activeChat";
+
 const JoinGroupList = () => {
   const db = getDatabase();
   const auth = getAuth();
+  const dispatch = useDispatch();
 
   const [joinMyGroupList, setJoinMyGroupList] = useState([]);
   const [joinGroupList, setJoinGroupList] = useState([]);
@@ -23,7 +27,7 @@ const JoinGroupList = () => {
       let array = [];
       snapshot.forEach((item) => {
         if (item.val().adminId == auth.currentUser.uid) {
-          array.push(item.val());
+          array.push({ ...item.val(), key: item.key });
         }
       });
       setJoinMyGroupList(array);
@@ -43,13 +47,24 @@ const JoinGroupList = () => {
     });
   }, []);
 
+  let handleActiveChat = (item) => {
+    console.log("group info", item);
+    let userInfo = {
+      status: "group",
+      groupId: auth.currentUser.uid == item.adminId ? item.key : item.gid,
+      // groupId: item.key,
+      name: item.groupName,
+    };
+    dispatch(activeChat(userInfo));
+  };
+
   return (
     <div className="group">
       <div className="createGroup">
         <h2>Joined Groups</h2>
       </div>
       {joinMyGroupList.map((item) => (
-        <div className="groupItem">
+        <div className="groupItem" onClick={() => handleActiveChat(item)}>
           <picture>
             <img src="images/groupImage.png" loading="lazy" />
           </picture>
@@ -61,7 +76,7 @@ const JoinGroupList = () => {
         </div>
       ))}
       {joinGroupList.map((item) => (
-        <div className="groupItem">
+        <div className="groupItem" onClick={() => handleActiveChat(item)}>
           <picture>
             <img src="images/groupImage.png" loading="lazy" />
           </picture>

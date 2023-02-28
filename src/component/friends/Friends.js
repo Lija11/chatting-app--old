@@ -9,10 +9,13 @@ import {
   set,
 } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { activeChat } from "../../slices/activeChat";
 
 const Friends = ({ block }) => {
   const db = getDatabase();
   const auth = getAuth();
+  const dispatch = useDispatch();
 
   let [friendList, setFriendList] = useState([]);
 
@@ -28,6 +31,17 @@ const Friends = ({ block }) => {
           array.push({ ...item.val(), key: item.key });
         }
       });
+      let userInfo = {};
+      if (array[0].recieverId == auth.currentUser.uid) {
+        userInfo.status = "single";
+        userInfo.id = array[0].senderId;
+        userInfo.name = array[0].senderName;
+      } else {
+        userInfo.status = "single";
+        userInfo.id = array[0].recieverId;
+        userInfo.name = array[0].recieverName;
+      }
+      dispatch(activeChat(userInfo));
       setFriendList(array);
     });
   }, []);
@@ -52,16 +66,30 @@ const Friends = ({ block }) => {
         });
   };
 
+  let handleActiveChat = (item) => {
+    let userInfo = {};
+    if (item.recieverId == auth.currentUser.uid) {
+      userInfo.status = "single";
+      userInfo.id = item.senderId;
+      userInfo.name = item.senderName;
+    } else {
+      userInfo.status = "single";
+      userInfo.id = item.recieverId;
+      userInfo.name = item.recieverName;
+    }
+    dispatch(activeChat(userInfo));
+  };
+
   return (
     <div className="friendsList">
       <h2>Friends</h2>
       {friendList.map((item) => (
-        <div className="groupItem">
+        <div className="groupItem" onClick={() => handleActiveChat(item)}>
           <picture>
             <img src="images/groupImage.png" loading="lazy" />
           </picture>
           <div className="groupText">
-            {auth.currentUser.uid == item.senderName ? (
+            {auth.currentUser.uid == item.senderId ? (
               <h3>{item.recieverName}</h3>
             ) : (
               <h3>{item.senderName}</h3>

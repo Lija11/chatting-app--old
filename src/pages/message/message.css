@@ -13,14 +13,12 @@
 
 .message .inbox {
   width: 800px;
-  padding: 30px;
+  padding: 30px 50px;
   border-radius: 10px;
-  height: 97vh;
+  height: 98vh;
   background: linear-gradient(145deg, #1e2024, #23272b);
   box-shadow: 10px 10px 19px #1c1e22, -10px -10px 19px #262a2e;
-  overflow-y: scroll;
   border-radius: 20px;
-  margin-top: 20px;
 }
 
 .message .groupAndFriend {

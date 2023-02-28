@@ -1,0 +1,97 @@
+.searchBtn i {
+  text-align: end;
+}
+
+/* .anotherChat {
+  background-color: #191b1e !important;
+  border-radius: 6px !important;
+  height: 60px !important;
+  transition: 0.4s !important;
+  border: 2px solid #191b1e !important;
+  padding: 0 15px !important;
+  font-size: 14px !important;
+  font-family: "Montserrat", sans-serif !important;
+  color: #c4cfde !important;
+  box-shadow: 1px 4px 2px -3px rgba(0, 0, 0, 0.7) inset,
+    -1px -3px 3px -2px rgba(255, 255, 255, 0.2) inset !important;
+  letter-spacing: 1px !important;
+  width: 100%;
+  margin-bottom: 15px !important;
+  display: inline-block !important;
+  padding-left: 10px !important;
+} */
+
+.anotherChats {
+  background-color: #191b1e;
+  border-radius: 6px;
+  transition: 0.4s;
+  border: 2px solid #191b1e;
+  padding: 20px;
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  color: #c4cfde;
+  box-shadow: 1px 4px 2px -3px rgba(0, 0, 0, 0.7) inset,
+    -1px -3px 3px -2px rgba(255, 255, 255, 0.2) inset;
+  letter-spacing: 1px;
+  /* margin-bottom: 20px; */
+  display: inline-block;
+  margin-top: 30px;
+  position: relative;
+}
+
+/* .anotherChats::after {
+  position: absolute;
+  content: "";
+  background: red;
+  width: 50px;
+  height: 50px;
+  clip-path: polygon(
+    26% 49%,
+    26% 35%,
+    85% 71%,
+    100% 80%,
+    79% 80%,
+    21% 80%,
+    24% 80%,
+    25% 66%
+  );
+  bottom: 0;
+  right: 0;
+} */
+
+.date {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: #c4cfde;
+  margin-top: 40px;
+  margin-top: 8px !important;
+}
+
+.flexChat {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flexChat .anotherChats {
+  background-color: #5f35f5 !important;
+  color: #fff;
+}
+
+.messageSend {
+  display: flex;
+  justify-content: space-between;
+}
+
+.messageSend input {
+  width: 90%;
+}
+
+.messageSend .groupBtn {
+  margin-top: 20px;
+}
+
+.chat {
+  height: 65vh;
+  overflow-y: scroll;
+}
