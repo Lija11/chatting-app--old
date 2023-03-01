@@ -4,11 +4,22 @@ import { useSelector } from "react-redux";
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import moment from "moment/moment";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 
 const Chat = () => {
   const db = getDatabase();
   const auth = getAuth();
+  const storage = getStorage();
+
   const [message, setMessage] = useState("");
+  const [show, setShow] = useState(false);
+  const [file, setFile] = useState("");
+  const [progress, setProgress] = useState("");
   const [singleMessageList, setSingleMessageList] = useState([]);
   const [groupMessageList, setGroupMessageList] = useState([]);
   let data = useSelector((state) => state.activeChat.value);
@@ -48,15 +59,6 @@ const Chat = () => {
     onValue(groupMessageRef, (snapshot) => {
       let array = [];
       snapshot.forEach((item) => {
-        // if (
-        //   (item.val().whoSendId == auth.currentUser.uid &&
-        //     item.val().whoReceivedId == data.groupId) ||
-        //   (item.val().whoSendId == data.groupId &&
-        //     item.val().whoReceivedId == auth.currentUser.uid)
-        // ) {
-        //   array.push(item.val());
-        // }
-
         array.push(item.val());
       });
       setGroupMessageList(array);
@@ -80,6 +82,55 @@ const Chat = () => {
       setSingleMessageList(array);
     });
   }, [data.id]);
+
+  let handleSingleImgUpload = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  let handleUpload = () => {
+    const singleImgStorageRef = storageRef(
+      storage,
+      "singleImages/" + file.name
+    );
+    const uploadTask = uploadBytesResumable(singleImgStorageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        setProgress(progress);
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+        }
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+          set(push(ref(db, "singleMessage/")), {
+            whoSendId: auth.currentUser.uid,
+            whoSendName: auth.currentUser.displayName,
+            whoReceivedId: data.id,
+            whoReceivedName: data.name,
+            img: downloadURL,
+            date: `${new Date().getFullYear()}-${
+              new Date().getMonth() + 1
+            }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+          }).then(() => {
+            setShow("");
+          });
+        });
+      }
+    );
+  };
 
   return (
     <div>
@@ -122,16 +173,40 @@ const Chat = () => {
             )
           : singleMessageList.map((item) =>
               item.whoSendId !== auth.currentUser.uid ? (
-                <div className="chatText">
-                  <h3 className="anotherChats">{item.message}</h3>
-                  <h5 className="date">
-                    {moment(item.date, "YYYYMMDD h:mm").fromNow()}
-                  </h5>
+                item.message ? (
+                  <div className="chatText">
+                    <h3 className="anotherChats">{item.message}</h3>
+                    <h5 className="date">
+                      {moment(item.date, "YYYYMMDD h:mm").fromNow()}
+                    </h5>
+                  </div>
+                ) : (
+                  <div className="chatText">
+                    <h3 className="anotherChats">
+                      <img src={item.img} alt="" />
+                    </h3>
+                    <h5 className="date">
+                      <h5 className="date">
+                        {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                      </h5>
+                    </h5>
+                  </div>
+                )
+              ) : item.message ? (
+                <div className="flexChat">
+                  <div className="chatText">
+                    <h3 className="anotherChats">{item.message}</h3>
+                    <h5 className="date">
+                      {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                    </h5>
+                  </div>
                 </div>
               ) : (
                 <div className="flexChat">
                   <div className="chatText">
-                    <h3 className="anotherChats">{item.message}</h3>
+                    <h3 className="anotherChats">
+                      <img src={item.img} alt="" />
+                    </h3>
                     <h5 className="date">
                       {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                     </h5>
@@ -174,7 +249,29 @@ const Chat = () => {
             Send
           </button>
         </div>
+
+        <div className="groupBtn">
+          <button className="searchBtn" onClick={() => setShow(true)}>
+            Attachment
+          </button>
+        </div>
       </div>
+      {show && (
+        <div className="uploadImg">
+          <div className="imgBox">
+            <h3>Select Image For Upload</h3>
+            <input type="file" onChange={handleSingleImgUpload} />
+            <h4>{progress}%</h4>
+            <br />
+            <button className="searchBtn upload" onClick={handleUpload}>
+              Upload
+            </button>
+            <button className="searchBtn cancel" onClick={() => setShow(false)}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "./component/sidebar/Sidebar";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
@@ -8,9 +9,23 @@ import Notification from "./pages/notification/Notification";
 import Registration from "./pages/registration/Registration";
 import Setting from "./pages/setting/Setting";
 import VerifyEmail from "./pages/verifyEmail/VerifyEmail";
+import "./style.css";
 function App() {
+  let [dark, setDark] = useState(false);
+
   return (
-    <div className="App">
+    <div className={dark ? "lightmode" : "darkmode"}>
+      {/* <div className={dark && "bg-white text-white"}> */}
+      <div>
+        <input
+          className="dark"
+          onChange={() => setDark(!dark)}
+          id="abc"
+          type="checkbox"
+        />
+        <label className="abc" for="abc"></label>{" "}
+        <span>{dark ? "Light" : "Dark"}</span>
+      </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/registration" element={<Registration />} />
