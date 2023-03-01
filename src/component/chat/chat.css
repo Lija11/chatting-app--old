@@ -128,3 +128,29 @@
 .imgBox .cancel {
   background-color: red !important;
 }
+
+.messageSend {
+  position: relative;
+}
+
+.messageSend .imgIcon {
+  color: #fff;
+  position: absolute;
+  bottom: 18px;
+  right: 85px;
+  font-size: 18px;
+}
+
+.emoji {
+  margin-right: 35px;
+}
+
+.emojiIcon {
+  position: absolute;
+  top: -416px;
+  right: 37px;
+}
+
+.crossIcon {
+  color: red;
+}

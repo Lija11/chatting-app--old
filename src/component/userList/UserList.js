@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import "../friends/friends.css";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import Search from "../search/Search";
 
 const UserList = () => {
   const db = getDatabase();
   const auth = getAuth();
 
   let [userList, setUserList] = useState([]);
+  let [searchUserList, setSearchUserList] = useState([]);
   let [friend, setFriend] = useState([]);
   let [blockUser, setBlockUser] = useState([]);
   let [friendList, setFriendList] = useState([]);
@@ -75,17 +77,94 @@ const UserList = () => {
     });
   }, []);
 
+  let array = [];
+  let handleSearch = (e) => {
+    console.log(e.target.value);
+    userList.filter((item) => {
+      if (e.target.value != "") {
+        if (item.name.toLowerCase().includes(e.target.value.toLowerCase())) {
+          array.push(item);
+        }
+      } else {
+        array = [];
+      }
+      setSearchUserList(array);
+    });
+  };
+
   return (
     <div className="friendsList">
+      <Search handleSearch={handleSearch} />
       <h2>User</h2>
-      {userList.map((item) => (
+      {searchUserList.length > 0
+        ? searchUserList.map((item) => (
+            <div className="groupItem" key={item.id}>
+              <picture>
+                <img src={item.photoURL} loading="lazy" />
+              </picture>
+              <div className="groupText">
+                <h3>{item.name}</h3>
+                {/* <p>{item.email}</p> */}
+              </div>
+              <div className="groupBtn">
+                {blockUser.includes(item.id + auth.currentUser.uid) ||
+                blockUser.includes(auth.currentUser.uid + item.id) ? (
+                  <button className="searchBtn">block</button>
+                ) : friendList.includes(item.id + auth.currentUser.uid) ||
+                  friendList.includes(auth.currentUser.uid + item.id) ? (
+                  <button className="searchBtn">Friend</button>
+                ) : friend.includes(item.id + auth.currentUser.uid) ||
+                  friend.includes(auth.currentUser.uid + item.id) ? (
+                  <button className="searchBtn">Pending</button>
+                ) : (
+                  <button
+                    onClick={() => handleFriendRequest(item)}
+                    className="searchBtn"
+                  >
+                    Friend Request
+                  </button>
+                )}
+              </div>
+            </div>
+          ))
+        : userList.map((item) => (
+            <div className="groupItem" key={item.id}>
+              <picture>
+                <img src={item.photoURL} loading="lazy" />
+              </picture>
+              <div className="groupText">
+                <h3>{item.name}</h3>
+                {/* <p>{item.email}</p> */}
+              </div>
+              <div className="groupBtn">
+                {blockUser.includes(item.id + auth.currentUser.uid) ||
+                blockUser.includes(auth.currentUser.uid + item.id) ? (
+                  <button className="searchBtn">block</button>
+                ) : friendList.includes(item.id + auth.currentUser.uid) ||
+                  friendList.includes(auth.currentUser.uid + item.id) ? (
+                  <button className="searchBtn">Friend</button>
+                ) : friend.includes(item.id + auth.currentUser.uid) ||
+                  friend.includes(auth.currentUser.uid + item.id) ? (
+                  <button className="searchBtn">Pending</button>
+                ) : (
+                  <button
+                    onClick={() => handleFriendRequest(item)}
+                    className="searchBtn"
+                  >
+                    Friend Request
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+
+      {/* {userList.map((item) => (
         <div className="groupItem" key={item.id}>
           <picture>
             <img src={item.photoURL} loading="lazy" />
           </picture>
           <div className="groupText">
             <h3>{item.name}</h3>
-            {/* <p>{item.email}</p> */}
           </div>
           <div className="groupBtn">
             {blockUser.includes(item.id + auth.currentUser.uid) ||
@@ -107,7 +186,7 @@ const UserList = () => {
             )}
           </div>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 };

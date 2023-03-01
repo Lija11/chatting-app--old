@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import moment from "moment/moment";
+import EmojiPicker from "emoji-picker-react";
+import { ImCross } from "react-icons/im";
 import {
   getStorage,
   ref as storageRef,
@@ -18,6 +20,7 @@ const Chat = () => {
 
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
+  const [showEmoji, setShowEmoji] = useState(false);
   const [file, setFile] = useState("");
   const [progress, setProgress] = useState("");
   const [singleMessageList, setSingleMessageList] = useState([]);
@@ -50,6 +53,8 @@ const Chat = () => {
         date: `${new Date().getFullYear()}-${
           new Date().getMonth() + 1
         }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+      }).then(() => {
+        setMessage("");
       });
     }
   };
@@ -214,28 +219,6 @@ const Chat = () => {
                 </div>
               )
             )}
-
-        {/* <div className="flexChat">
-          <div className="chatText">
-            <h3 className="anotherChats">{data.message}</h3>
-            <h5 className="date">Today, 4:37pm</h5>
-          </div>
-        </div> */}
-
-        {/* <div className="chatText">
-          <h3 className="anotherChats">
-            <img src="images/chatImg.png" alt="" />
-          </h3>
-          <h5 className="date">Today, 4:37pm</h5>
-        </div>
-        <div className="flexChat">
-          <div className="chatText">
-            <h3 className="anotherChats">
-              <img src="images/chatImg.png" alt="" />
-            </h3>
-            <h5 className="date">Today, 4:37pm</h5>
-          </div>
-        </div> */}
       </div>
       <div className="messageSend">
         <input
@@ -243,17 +226,33 @@ const Chat = () => {
           type="text"
           placeholder="Send Your Message"
           onChange={handleMessage}
+          value={message}
         />
         <div className="groupBtn">
           <button className="searchBtn" onClick={handleSendMessage}>
             Send
           </button>
         </div>
-
-        <div className="groupBtn">
-          <button className="searchBtn" onClick={() => setShow(true)}>
-            Attachment
-          </button>
+        <div className="imgIcon">
+          <i className="fa-regular fa-image" onClick={() => setShow(true)}></i>
+        </div>
+        {showEmoji && (
+          <div className="emojiIcon">
+            <EmojiPicker onEmojiClick={(e) => setMessage(message + e.emoji)} />
+          </div>
+        )}
+        <div className="imgIcon emoji">
+          {showEmoji ? (
+            <ImCross
+              className="crossIcon"
+              onClick={() => setShowEmoji(false)}
+            />
+          ) : (
+            <i
+              className="fa-regular fa-face-smile"
+              onClick={() => setShowEmoji(true)}
+            ></i>
+          )}
         </div>
       </div>
       {show && (
