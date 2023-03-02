@@ -9,14 +9,27 @@ import { ImCross } from "react-icons/im";
 import {
   getStorage,
   ref as storageRef,
+  ref as sref,
   uploadBytesResumable,
   getDownloadURL,
+  uploadBytes,
 } from "firebase/storage";
+import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 
 const Chat = () => {
   const db = getDatabase();
   const auth = getAuth();
   const storage = getStorage();
+  const storageRef = sref(storage, "some-child");
+
+  let [audio, setAudio] = useState("");
+  let [audioData, setAudioData] = useState("");
+  const recorderControls = useAudioRecorder();
+  const addAudioElement = (blob) => {
+    const url = URL.createObjectURL(blob);
+    setAudioData(blob);
+    setAudio(url);
+  };
 
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
@@ -29,6 +42,14 @@ const Chat = () => {
 
   let handleMessage = (e) => {
     setMessage(e.target.value);
+  };
+
+  let handleAudioUpload = () => {
+    uploadBytes(storageRef, audioData).then((snapshot) => {
+      getDownloadURL(storageRef).then((downloadURL) => {
+        console.log("File available at", downloadURL);
+      });
+    });
   };
 
   let handleSendMessage = () => {
@@ -93,10 +114,7 @@ const Chat = () => {
   };
 
   let handleUpload = () => {
-    const singleImgStorageRef = storageRef(
-      storage,
-      "singleImages/" + file.name
-    );
+    const singleImgStorageRef = sref(storage, "singleImages/" + file.name);
     const uploadTask = uploadBytesResumable(singleImgStorageRef, file);
     uploadTask.on(
       "state_changed",
@@ -221,6 +239,19 @@ const Chat = () => {
             )}
       </div>
       <div className="messageSend">
+        {audio && (
+          <>
+            <audio controls src={audio}></audio>
+            <br />
+            <button className="searchBtn upload" onClick={handleAudioUpload}>
+              Send
+            </button>
+            <button className="searchBtn cancel" onClick={() => setAudio("")}>
+              Cancel
+            </button>
+          </>
+        )}
+
         <input
           className="anotherChats"
           type="text"
@@ -233,6 +264,7 @@ const Chat = () => {
             Send
           </button>
         </div>
+
         <div className="imgIcon">
           <i className="fa-regular fa-image" onClick={() => setShow(true)}></i>
         </div>
@@ -253,6 +285,13 @@ const Chat = () => {
               onClick={() => setShowEmoji(true)}
             ></i>
           )}
+        </div>
+
+        <div className="voiceRecord">
+          <AudioRecorder
+            onRecordingComplete={(blob) => addAudioElement(blob)}
+            recorderControls={recorderControls}
+          />
         </div>
       </div>
       {show && (
