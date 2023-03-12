@@ -1,12 +1,11 @@
 import React from "react";
-import Sidebar from "../../component/sidebar/Sidebar";
+import Notification from "../notification/Notification";
 
 const Setting = () => {
   return (
-    <div>
-      <Sidebar />
-      <h1>this is a Setting page</h1>
-    </div>
+    <>
+      <Notification />
+    </>
   );
 };
 

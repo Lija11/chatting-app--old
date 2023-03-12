@@ -28,6 +28,7 @@ const Sidebar = () => {
   let navigate = useNavigate();
   const storage = getStorage();
 
+  const [Mobile, setMobile] = useState(false);
   const [show, setShow] = useState(false);
   const [loader, setLoader] = useState(false);
   const [img, setImg] = useState(false);
@@ -76,12 +77,36 @@ const Sidebar = () => {
     reader.readAsDataURL(files[0]);
   };
 
+  // const getCropData = (e) => {
+  //   e.preventDefault();
+  //   setLoader(true);
+  //   const storageRef = ref(storage, imgName);
+  //   if (typeof cropper !== "undefined") {
+  //     // cropper.getCroppedCanvas().toDataURL();
+  //     const message4 = cropper.getCroppedCanvas().toDataURL();
+  //     uploadString(storageRef, message4, "data_url").then((snapshot) => {
+  //       getDownloadURL(storageRef).then((downloadURL) => {
+  //         console.log("File available at", downloadURL);
+  //         updateProfile(auth.currentUser, {
+  //           photoURL: downloadURL,
+  //         })
+  //           .then(() => {
+  //             setLoader(false);
+  //             setShow(false);
+  //           })
+  //           .catch((error) => {
+  //             console.log("error");
+  //           });
+  //       });
+  //     });
+  //   }
+  // };
+
   const getCropData = (e) => {
-    e.preventDefault();
     setLoader(true);
     const storageRef = ref(storage, imgName);
     if (typeof cropper !== "undefined") {
-      // cropper.getCroppedCanvas().toDataURL();
+      cropper.getCroppedCanvas().toDataURL();
       const message4 = cropper.getCroppedCanvas().toDataURL();
       uploadString(storageRef, message4, "data_url").then((snapshot) => {
         getDownloadURL(storageRef).then((downloadURL) => {
@@ -90,11 +115,12 @@ const Sidebar = () => {
             photoURL: downloadURL,
           })
             .then(() => {
+              console.log("upload ses");
               setLoader(false);
               setShow(false);
             })
             .catch((error) => {
-              console.log("error");
+              console.log(error);
             });
         });
       });
@@ -102,7 +128,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar">
+    <div className="sidebarMenu">
       <ToastContainer position="top-center" autoClose={2000} />
       <div className="profile">
         <div className="profileImg" onClick={handleImgUpload}>
@@ -116,7 +142,11 @@ const Sidebar = () => {
         <h4>{auth.currentUser.displayName}</h4>
       </div>
       {/* <h4>{auth.currentUser.displayName}</h4> */}
-      <div className="sidebarIcons">
+
+      <div
+        className={Mobile ? "nav-links-mobile" : "sidebarIcons"}
+        onClick={() => setMobile(false)}
+      >
         <NavLink to="/">
           {/* <AiOutlineHome className="icon" /> */}
           <i className="fa-solid fa-house icon"></i>
@@ -139,34 +169,43 @@ const Sidebar = () => {
           class="fa-solid fa-arrow-right-from-bracket icon logout"
         ></i>
       </div>
+      <button className="mobile-menu-icon" onClick={() => setMobile(!Mobile)}>
+        {Mobile ? (
+          <div className="closeIcon">
+            <i className="fa-solid fa-xmark" />
+          </div>
+        ) : (
+          <i className="fa-solid fa-bars" />
+        )}
+      </button>
       {show && (
         // <div className="registrationFrom">
         <div className="ImgUploader">
-          <div className="innerBox loginInnerBox">
-            <div className="innerTextBox loginBox">
+          <div className="innerBox ">
+            <div className="innerBoxText ">
               <div className="innerText">
                 <h4 className="title-h">Upload Image</h4>
               </div>
               {previewImg ? (
                 <>
                   <img className="profileImg" src={previewImg} />
-                  <h4>{auth.currentUser.displayName}</h4>
+                  <h4 className="userName">{auth.currentUser.displayName}</h4>
                 </>
               ) : (
                 <img className="profileImg" src={auth.currentUser.photoURL} />
               )}
-              <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Control
-                    className="from"
+              <form className="rForm">
+                <div className="input-gap" controlId="formBasicEmail">
+                  <input
+                    className="form-control"
                     type="file"
                     onChange={handleSelectImg}
                   />
-                </Form.Group>
+                </div>
                 <Cropper
                   src={img}
-                  style={{ height: 400, width: "100%" }}
                   // Cropper.js options
+                  style={{ height: 200, maxWidth: 400 }}
                   initialAspectRatio={16 / 9}
                   guides={false}
                   crop={onCrop}
@@ -186,23 +225,23 @@ const Sidebar = () => {
                   />
                 ) : (
                   <div className="uploadBtn">
-                    <Button
+                    <button
                       onClick={getCropData}
                       className="btn forgotBtn"
                       type="submit"
                     >
                       Upload
-                    </Button>
-                    <Button
-                      className="btn forgotBtn"
+                    </button>
+                    <button
+                      className="btn forgotBtn cancelBtn"
                       onClick={() => setShow(false)}
                       type="submit"
                     >
                       Cancel
-                    </Button>
+                    </button>
                   </div>
                 )}
-              </Form>
+              </form>
             </div>
           </div>
         </div>

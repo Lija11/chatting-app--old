@@ -16,7 +16,7 @@ function App() {
   return (
     <div className={dark ? "lightmode" : "darkmode"}>
       {/* <div className={dark && "bg-white text-white"}> */}
-      <div>
+      {/* <div>
         <input
           className="dark"
           onChange={() => setDark(!dark)}
@@ -25,7 +25,7 @@ function App() {
         />
         <label className="abc" for="abc"></label>{" "}
         <span>{dark ? "Light" : "Dark"}</span>
-      </div>
+      </div> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/registration" element={<Registration />} />

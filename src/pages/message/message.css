@@ -21,13 +21,14 @@
   border-radius: 20px;
 }
 
-.message .groupAndFriend {
-  padding: 30px;
-  border-radius: 10px;
-  height: 420px;
-  background: linear-gradient(145deg, #1e2024, #23272b);
-  box-shadow: 10px 10px 19px #1c1e22, -10px -10px 19px #262a2e;
-  overflow-y: scroll;
-  border-radius: 20px;
-  margin-top: 20px;
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .message {
+    display: block;
+  }
+  .message .inbox {
+    width: 90%;
+    padding: 20px 15px;
+    margin: 0 auto;
+    margin-top: 30px;
+  }
 }

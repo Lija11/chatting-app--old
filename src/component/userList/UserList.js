@@ -93,20 +93,24 @@ const UserList = () => {
   };
 
   return (
-    <div className="friendsList">
+    <div>
       <Search handleSearch={handleSearch} />
       <h2>User</h2>
       {searchUserList.length > 0
         ? searchUserList.map((item) => (
-            <div className="groupItem" key={item.id}>
-              <picture>
-                <img src={item.photoURL} loading="lazy" />
-              </picture>
-              <div className="groupText">
-                <h3>{item.name}</h3>
-                {/* <p>{item.email}</p> */}
+            <div className="boxInnerItem" key={item.id}>
+              <div className="boxInnerItemText">
+                <div className="boxInnerItemTextFlex">
+                  <picture>
+                    <img src={item.photoURL} loading="lazy" />
+                  </picture>
+                  <div className="itemText">
+                    <h5>{item.name}</h5>
+                    {/* <p>{item.email}</p> */}
+                  </div>
+                </div>
               </div>
-              <div className="groupBtn">
+              <div className="boxInnerItemBtn">
                 {blockUser.includes(item.id + auth.currentUser.uid) ||
                 blockUser.includes(auth.currentUser.uid + item.id) ? (
                   <button className="searchBtn">block</button>
@@ -128,15 +132,19 @@ const UserList = () => {
             </div>
           ))
         : userList.map((item) => (
-            <div className="groupItem" key={item.id}>
-              <picture>
-                <img src={item.photoURL} loading="lazy" />
-              </picture>
-              <div className="groupText">
-                <h3>{item.name}</h3>
-                {/* <p>{item.email}</p> */}
+            <div className="boxInnerItem" key={item.id}>
+              <div className="boxInnerItemText">
+                <div className="boxInnerItemTextFlex">
+                  <picture>
+                    <img src={item.photoURL} loading="lazy" />
+                  </picture>
+                  <div className="itemText">
+                    <h5>{item.name}</h5>
+                    {/* <p>{item.email}</p> */}
+                  </div>
+                </div>
               </div>
-              <div className="groupBtn">
+              <div className="boxInnerItemBtn">
                 {blockUser.includes(item.id + auth.currentUser.uid) ||
                 blockUser.includes(auth.currentUser.uid + item.id) ? (
                   <button className="searchBtn">block</button>
@@ -157,36 +165,6 @@ const UserList = () => {
               </div>
             </div>
           ))}
-
-      {/* {userList.map((item) => (
-        <div className="groupItem" key={item.id}>
-          <picture>
-            <img src={item.photoURL} loading="lazy" />
-          </picture>
-          <div className="groupText">
-            <h3>{item.name}</h3>
-          </div>
-          <div className="groupBtn">
-            {blockUser.includes(item.id + auth.currentUser.uid) ||
-            blockUser.includes(auth.currentUser.uid + item.id) ? (
-              <button className="searchBtn">block</button>
-            ) : friendList.includes(item.id + auth.currentUser.uid) ||
-              friendList.includes(auth.currentUser.uid + item.id) ? (
-              <button className="searchBtn">Friend</button>
-            ) : friend.includes(item.id + auth.currentUser.uid) ||
-              friend.includes(auth.currentUser.uid + item.id) ? (
-              <button className="searchBtn">Pending</button>
-            ) : (
-              <button
-                onClick={() => handleFriendRequest(item)}
-                className="searchBtn"
-              >
-                Friend Request
-              </button>
-            )}
-          </div>
-        </div>
-      ))} */}
     </div>
   );
 };

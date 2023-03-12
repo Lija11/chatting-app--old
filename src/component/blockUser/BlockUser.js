@@ -55,26 +55,38 @@ const BlockUser = () => {
   };
 
   return (
-    <div className="friendRequest">
+    <div>
       <h2>Block List</h2>
-      {block.map((item) => (
-        <div className="groupItem">
-          <picture>
-            <img src="images/groupImage.png" loading="lazy" />
-          </picture>
-          <div className="groupText">
-            <h3>{item.block}</h3>
-            <p>Hi Guys, Wassup!</p>
+      {block.length == 0 ? (
+        <h5 className="available">No Block User Available</h5>
+      ) : (
+        block.map((item) => (
+          <div className="boxInnerItem">
+            <div className="boxInnerItemText">
+              <div className="boxInnerItemTextFlex">
+                <picture>
+                  <img src="images/groupImage.png" loading="lazy" />
+                </picture>
+                <div className="itemText">
+                  <h5>{item.block}</h5>
+                  <p>Hi Guys, Wassup!</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="boxInnerItemBtn">
+              {!item.blockById && (
+                <button
+                  onClick={() => handleUnblock(item)}
+                  className="searchBtn"
+                >
+                  Unblock
+                </button>
+              )}
+            </div>
           </div>
-          <div className="groupBtn">
-            {!item.blockById && (
-              <button onClick={() => handleUnblock(item)} className="searchBtn">
-                Unblock
-              </button>
-            )}
-          </div>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 };

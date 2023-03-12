@@ -12,6 +12,7 @@ import "./home.css";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import VerifyEmail from "../verifyEmail/VerifyEmail";
+import { Scrollbar } from "react-scrollbars-custom";
 
 const Home = () => {
   const auth = getAuth();
@@ -31,26 +32,41 @@ const Home = () => {
   return (
     <>
       {verify ? (
-        <div className="homePage">
-          <div className="sidebar">
+        <>
+          <div className="mobileSidebar">
             <Sidebar />
           </div>
-          <div className="groupRequest">
-            <div className="searchGroup">
-              <Search />
-              <GroupRequest />
+          <div className="homePage">
+            <div className="sidebar">
+              <Sidebar />
             </div>
-            <FriendRequest />
+            <div className="groupRequest">
+              <Scrollbar className="homePageItemBox scrollbarDesign searchHeight">
+                <Search />
+                <GroupRequest />
+              </Scrollbar>
+              <Scrollbar className="homePageItemBox scrollbarDesign requestHeight">
+                <FriendRequest />
+              </Scrollbar>
+            </div>
+            <div className="friends">
+              <Scrollbar className="homePageItemBox scrollbarDesign">
+                <Friends block="true" />
+              </Scrollbar>
+              <Scrollbar className="homePageItemBox scrollbarDesign">
+                <MyGroup />
+              </Scrollbar>
+            </div>
+            <div className="userList">
+              <Scrollbar className="homePageItemBox scrollbarDesign">
+                <UserList />
+              </Scrollbar>
+              <Scrollbar className="homePageItemBox scrollbarDesign">
+                <BlockUser />
+              </Scrollbar>
+            </div>
           </div>
-          <div className="friends">
-            <Friends block="true" />
-            <MyGroup />
-          </div>
-          <div className="userList">
-            <UserList />
-            <BlockUser />
-          </div>
-        </div>
+        </>
       ) : (
         <VerifyEmail />
       )}

@@ -116,9 +116,42 @@ h1 {
   color: #fff;
 }
 
-.lightmode {
-  background-color: white;
+h2 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  font-size: 26px;
+  color: #c4cfde;
+}
+
+h4 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  font-size: 25px;
+  color: #ffffff;
+  text-align: center;
+}
+
+h5 {
+  color: #ced0d4;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+}
+
+p {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  color: rgb(100 116 139) !important;
+}
+
+.lightMode .title-h {
   color: black;
+}
+
+.lightMode {
+  background-color: rgb(243 244 246);
 }
 
 .dark {
@@ -156,5 +189,19 @@ h1 {
 }
 
 .dark:checked + .abc:before {
-  background: rgb(212, 212, 212);
+  background: #ffffff;
+}
+
+.cancelBtn {
+  background: rgb(239 68 68) !important;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 1199px) {
+  p {
+    font-size: 14px;
+  }
+
+  h4 {
+    font-size: 20px;
+  }
 }

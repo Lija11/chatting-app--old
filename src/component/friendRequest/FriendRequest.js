@@ -48,27 +48,31 @@ const FriendRequest = () => {
   };
 
   return (
-    <div className="friendRequest">
+    <div>
       <h2>Friend Request</h2>
       {friendRequest.length == 0 ? (
-        <h1>No Friend Request Available</h1>
+        <h5 className="available">No Friend Request Available</h5>
       ) : (
         friendRequest.map((item) => (
-          <div className="groupItem">
-            <picture>
-              <img src={item.senderPhoto} loading="lazy" />
-            </picture>
-            <div className="groupText">
-              <h3>{item.senderName}</h3>
-              <p>Hi Guys, Wassup!</p>
-            </div>
-            <div className="groupBtn">
-              <button
-                className="searchBtn"
-                onClick={() => handleFriendRequestAccept(item)}
-              >
-                Accept
-              </button>
+          <div className="boxInnerItem">
+            <div className="boxInnerItemText">
+              <div className="boxInnerItemTextFlex">
+                <picture>
+                  <img src={item.senderPhoto} loading="lazy" />
+                </picture>
+                <div className="itemText">
+                  <h5>{item.senderName}</h5>
+                  <p>Hi Guys, Wassup!</p>
+                </div>
+              </div>
+              <div className="boxInnerItemBtn">
+                <button
+                  className="searchBtn"
+                  onClick={() => handleFriendRequestAccept(item)}
+                >
+                  Accept
+                </button>
+              </div>
             </div>
           </div>
         ))

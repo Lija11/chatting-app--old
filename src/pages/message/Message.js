@@ -5,8 +5,7 @@ import Sidebar from "../../component/sidebar/Sidebar";
 import "./message.css";
 import Friends from "../../component/friends/Friends";
 import Chat from "../../component/chat/Chat";
-// import "../../pages/registration/registration.css";
-// import "./s";
+import { Scrollbar } from "react-scrollbars-custom";
 
 const Message = () => {
   return (
@@ -15,11 +14,14 @@ const Message = () => {
         <Sidebar />
       </div>
       <div className="groupRequest">
-        <div className="groupAndFriend">
+        <Scrollbar className="homePageItemBox scrollbarDesign">
           <Search />
           <JoinGroupList />
-        </div>
-        <Friends />
+        </Scrollbar>
+        <div style={{ paddingTop: "5px" }}></div>
+        <Scrollbar className="homePageItemBox scrollbarDesign">
+          <Friends />
+        </Scrollbar>
       </div>
       <div className="inbox">
         <Chat />

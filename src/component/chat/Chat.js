@@ -6,6 +6,7 @@ import { getAuth } from "firebase/auth";
 import moment from "moment/moment";
 import EmojiPicker from "emoji-picker-react";
 import { ImCross } from "react-icons/im";
+import ScrollableFeed from "react-scrollable-feed";
 import {
   getStorage,
   ref as storageRef,
@@ -48,6 +49,18 @@ const Chat = () => {
     uploadBytes(storageRef, audioData).then((snapshot) => {
       getDownloadURL(storageRef).then((downloadURL) => {
         console.log("File available at", downloadURL);
+        set(push(ref(db, "singleMessage/")), {
+          whoSendId: auth.currentUser.uid,
+          whoSendName: auth.currentUser.displayName,
+          whoReceivedId: data.id,
+          whoReceivedName: data.name,
+          audio: downloadURL,
+          date: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+        }).then(() => {
+          setAudio("");
+        });
       });
     });
   };
@@ -63,6 +76,8 @@ const Chat = () => {
         date: `${new Date().getFullYear()}-${
           new Date().getMonth() + 1
         }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+      }).then(() => {
+        setMessage("");
       });
     } else {
       set(push(ref(db, "singleMessage/")), {
@@ -114,129 +129,218 @@ const Chat = () => {
   };
 
   let handleUpload = () => {
-    const singleImgStorageRef = sref(storage, "singleImages/" + file.name);
-    const uploadTask = uploadBytesResumable(singleImgStorageRef, file);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        setProgress(progress);
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-        }
-      },
-      (error) => {
-        // Handle unsuccessful uploads
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
-          set(push(ref(db, "singleMessage/")), {
-            whoSendId: auth.currentUser.uid,
-            whoSendName: auth.currentUser.displayName,
-            whoReceivedId: data.id,
-            whoReceivedName: data.name,
-            img: downloadURL,
-            date: `${new Date().getFullYear()}-${
-              new Date().getMonth() + 1
-            }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-          }).then(() => {
-            setShow("");
+    if (data.status == "group") {
+      const singleImgStorageRef = sref(storage, "groupMessage/" + file.name);
+      const uploadTask = uploadBytesResumable(singleImgStorageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          setProgress(progress);
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            set(push(ref(db, "groupMessage/")), {
+              whoSendId: auth.currentUser.uid,
+              whoSendName: auth.currentUser.displayName,
+              whoReceivedId: data.groupId,
+              whoReceivedName: data.name,
+              img: downloadURL,
+              date: `${new Date().getFullYear()}-${
+                new Date().getMonth() + 1
+              }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+            }).then(() => {
+              setShow("");
+            });
           });
-        });
-      }
-    );
+        }
+      );
+    } else {
+      const singleImgStorageRef = sref(storage, "singleImages/" + file.name);
+      const uploadTask = uploadBytesResumable(singleImgStorageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          setProgress(progress);
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            set(push(ref(db, "singleMessage/")), {
+              whoSendId: auth.currentUser.uid,
+              whoSendName: auth.currentUser.displayName,
+              whoReceivedId: data.id,
+              whoReceivedName: data.name,
+              img: downloadURL,
+              date: `${new Date().getFullYear()}-${
+                new Date().getMonth() + 1
+              }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+            }).then(() => {
+              setShow("");
+            });
+          });
+        }
+      );
+    }
   };
 
   return (
     <div>
-      <div className="groupItem">
+      <div className="boxInnerItem">
         <picture>
           <img src="images/groupImage.png" loading="lazy" />
         </picture>
-        <div className="groupText">
-          <h3>{data ? data.name : "Please Select A Friend or Group"}</h3>
-          <p>Online</p>
-        </div>
-        <div className="groupBtn">
-          <button className="searchBtn">
-            <i className="fa-solid fa-message"></i>
-          </button>
+        <div className="boxInnerItemTextFlex">
+          <div className="boxInnerItemText">
+            <h5>{data ? data.name : "Please Select A Friend or Group"}</h5>
+            <p>Online</p>
+          </div>
         </div>
       </div>
       <div className="chat">
-        {data.status == "group"
-          ? groupMessageList.map((item) =>
-              item.whoSendId !== auth.currentUser.uid
-                ? item.whoReceivedId == data.groupId && (
+        <ScrollableFeed>
+          {data.status == "group"
+            ? groupMessageList.map((item) =>
+                item.whoSendId !== auth.currentUser.uid ? (
+                  item.whoReceivedId == data.groupId && item.message ? (
                     <div className="chatText">
                       <h3 className="anotherChats">{item.message}</h3>
                       <h5 className="date">
                         {moment(item.date, "YYYYMMDD h:mm").fromNow()}
                       </h5>
                     </div>
-                  )
-                : item.whoReceivedId == data.groupId && (
-                    <div className="flexChat">
-                      <div className="chatText">
-                        <h3 className="anotherChats">{item.message}</h3>
+                  ) : (
+                    <div className="chatText">
+                      <div className="chattingImg">
+                        <img src={item.img} alt="" />
+                      </div>
+                      <h5 className="date">
                         <h5 className="date">
                           {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                         </h5>
-                      </div>
+                      </h5>
                     </div>
                   )
-            )
-          : singleMessageList.map((item) =>
-              item.whoSendId !== auth.currentUser.uid ? (
-                item.message ? (
-                  <div className="chatText">
-                    <h3 className="anotherChats">{item.message}</h3>
-                    <h5 className="date">
-                      {moment(item.date, "YYYYMMDD h:mm").fromNow()}
-                    </h5>
-                  </div>
-                ) : (
-                  <div className="chatText">
-                    <h3 className="anotherChats">
-                      <img src={item.img} alt="" />
-                    </h3>
-                    <h5 className="date">
+                ) : item.whoReceivedId == data.groupId && item.message ? (
+                  <div className="flexChat">
+                    <div className="chatText">
+                      <h3 className="anotherChats">{item.message}</h3>
                       <h5 className="date">
                         {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                       </h5>
-                    </h5>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flexChat">
+                    <div className="chatText">
+                      <div className="chattingImg">
+                        <img src={item.img} alt="" />
+                      </div>
+                      <h5 className="date">
+                        {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                      </h5>
+                    </div>
                   </div>
                 )
-              ) : item.message ? (
-                <div className="flexChat">
-                  <div className="chatText">
-                    <h3 className="anotherChats">{item.message}</h3>
-                    <h5 className="date">
-                      {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
-                    </h5>
-                  </div>
-                </div>
-              ) : (
-                <div className="flexChat">
-                  <div className="chatText">
-                    <h3 className="anotherChats">
-                      <img src={item.img} alt="" />
-                    </h3>
-                    <h5 className="date">
-                      {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
-                    </h5>
-                  </div>
-                </div>
               )
-            )}
+            : singleMessageList.map((item) =>
+                item.whoSendId !== auth.currentUser.uid ? (
+                  item.audio ? (
+                    <div className="chatText">
+                      {/* <h3 className="anotherChats">{item.message}</h3> */}
+                      <audio
+                        className="anotherChats"
+                        controls
+                        src={item.audio}
+                      ></audio>
+                      <h5 className="date">
+                        {moment(item.date, "YYYYMMDD h:mm").fromNow()}
+                      </h5>
+                    </div>
+                  ) : item.message ? (
+                    <div className="chatText">
+                      <h3 className="anotherChats">{item.message}</h3>
+                      <h5 className="date">
+                        {moment(item.date, "YYYYMMDD h:mm").fromNow()}
+                      </h5>
+                    </div>
+                  ) : (
+                    <div className="chatText">
+                      <div className="chattingImg">
+                        <img src={item.img} alt="" />
+                      </div>
+                      <h5 className="date">
+                        <h5 className="date">
+                          {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                        </h5>
+                      </h5>
+                    </div>
+                  )
+                ) : item.audio ? (
+                  <div className="flexChat">
+                    <div className="chatText">
+                      {/* <h3 className="anotherChats">{item.message}</h3> */}
+                      <audio
+                        className="anotherChats"
+                        controls
+                        src={item.audio}
+                      ></audio>
+                      <h5 className="date">
+                        {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                      </h5>
+                    </div>
+                  </div>
+                ) : item.message ? (
+                  <div className="flexChat">
+                    <div className="chatText">
+                      <h3 className="anotherChats">{item.message}</h3>
+                      <h5 className="date">
+                        {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                      </h5>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flexChat">
+                    <div className="chatText">
+                      <div className="chattingImg">
+                        <img src={item.img} alt="" />
+                      </div>
+                      <h5 className="date">
+                        {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                      </h5>
+                    </div>
+                  </div>
+                )
+              )}
+        </ScrollableFeed>
       </div>
       <div className="messageSend">
         {audio && (

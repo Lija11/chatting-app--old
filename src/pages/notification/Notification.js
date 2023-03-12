@@ -1,11 +1,16 @@
 import React from "react";
 import Sidebar from "../../component/sidebar/Sidebar";
+import "./notification.css";
 
 const Notification = () => {
   return (
-    <div>
-      <Sidebar />
-      <h1>this is a Notification page</h1>
+    <div className="notification">
+      <div className="notificationSidebar">
+        <Sidebar />
+      </div>
+      <div className="notificationItem">
+        <h1>coming soon...</h1>
+      </div>
     </div>
   );
 };

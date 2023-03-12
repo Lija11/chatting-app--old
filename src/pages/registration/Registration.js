@@ -157,43 +157,44 @@ const Registration = () => {
 
   return (
     <div className="registrationFrom">
-      <div className="innerBox loginInnerBox">
+      <div className="innerBox">
         <div className="innerBoxText">
           <div className="innerText">
             <h4 className="title-h">Get Started With Easily Register</h4>
             <p className="title-p">Free register and you can enjoy it</p>
           </div>
 
-          <Form>
-            <Form.Text style={{ color: "green" }}>{success}</Form.Text>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Control
+          <form className="rForm">
+            <p style={{ color: "green" }}>{success}</p>
+            <div className="input-gap" controlId="formBasicEmail">
+              <input
+                className="form-control"
                 type="email"
                 placeholder="Enter email "
                 onChange={handleEmail}
               />
-              <Form.Text className="inputError">
+              <p className="inputError form-text">
                 {emailError}
                 {Ferror}
-              </Form.Text>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Control
-                className="from"
+              </p>
+            </div>
+            <div className="input-gap" controlId="formBasicEmail">
+              <input
+                className="from form-control"
                 type="text"
                 placeholder="Enter Name "
                 onChange={handleName}
               />
-              <Form.Text className="inputError">{nameError}</Form.Text>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Control
-                className="from"
+              <p className="inputError form-text">{nameError}</p>
+            </div>
+            <div className="input-gap" controlId="formBasicEmail">
+              <input
+                className="from form-control"
                 type={show ? "text" : "password"}
                 placeholder="Password "
                 onChange={handlePassword}
               />
-              <Form.Text className="inputError">
+              <p className="inputError form-text">
                 {passwordError}
                 {show ? (
                   <RiEyeFill
@@ -206,17 +207,17 @@ const Registration = () => {
                     className="hidePassword"
                   />
                 )}
-              </Form.Text>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Control
-                className="from"
+              </p>
+            </div>
+            <div className="input-gap" controlId="formBasicEmail">
+              <input
+                className="from form-control"
                 type="password"
                 placeholder="Confirm Password "
                 onChange={handleCpassword}
               />
-              <Form.Text className=" inputError">{cPasswordError}</Form.Text>
-            </Form.Group>
+              <p className=" inputError form-text">{cPasswordError}</p>
+            </div>
             {loader ? (
               <RotatingLines
                 strokeColor="grey"
@@ -226,17 +227,17 @@ const Registration = () => {
                 visible={true}
               />
             ) : (
-              <Button className="btn" type="submit" onClick={handleSubmit}>
+              <button className="btn" type="submit" onClick={handleSubmit}>
                 Submit
-              </Button>
+              </button>
             )}
-            <p>
+            <p className="bottom-p">
               Already Have An Account?
               <Link to="/login" className="singIn">
                 Sing In
               </Link>
             </p>
-          </Form>
+          </form>
         </div>
       </div>
     </div>

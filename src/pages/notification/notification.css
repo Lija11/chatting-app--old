@@ -1,0 +1,21 @@
+.notification {
+  display: flex;
+}
+
+/* .notificationSidebar {
+  width: 186px;
+  height: 100vh;
+} */
+
+.notificationItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 287px;
+}
+
+.notificationItem h1 {
+  background: #5f35f5;
+  padding: 40px;
+  text-transform: uppercase;
+}

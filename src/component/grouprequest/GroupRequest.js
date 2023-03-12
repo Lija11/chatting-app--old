@@ -14,6 +14,8 @@ import { getAuth } from "firebase/auth";
 const GroupRequest = () => {
   const db = getDatabase();
   const auth = getAuth();
+
+  const [dark, setDark] = useState(false);
   const [createGroup, setCreateGroup] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [groupTag, setGroupTag] = useState("");
@@ -26,6 +28,7 @@ const GroupRequest = () => {
       groupTag: groupTag,
       adminName: auth.currentUser.displayName,
       adminId: auth.currentUser.uid,
+      userPhoto: auth.currentUser.uid,
     }).then(() => {
       setCreateGroup(false);
     });
@@ -36,6 +39,8 @@ const GroupRequest = () => {
     onValue(usersRef, (snapshot) => {
       let array = [];
       snapshot.forEach((item) => {
+        // console.log("create Group", item.val());
+        console.log("create Group", auth.currentUser.uid == item.val().adminId);
         if (item.val().adminId !== auth.currentUser.uid) {
           array.push({ ...item.val(), gid: item.key });
         }
@@ -61,7 +66,7 @@ const GroupRequest = () => {
   };
 
   return (
-    <div className="group">
+    <div>
       <div className="createGroup">
         <h2>Group List</h2>
         <div className="groupBtn">
@@ -75,47 +80,58 @@ const GroupRequest = () => {
       </div>
       {createGroup ? (
         <>
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Control
-                className="from"
+          <form className="rForm">
+            <div className="input-gap" controlId="formBasicEmail">
+              <input
+                className={dark ? "lightMode" : "form-control"}
                 type="text"
                 placeholder="Group Name "
                 onChange={(e) => setGroupName(e.target.value)}
               />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Control
-                className="from"
+            </div>
+            <div className="input-gap" controlId="formBasicEmail">
+              <input
+                className={dark ? "lightMode" : "form-control"}
                 type="text"
                 placeholder="Group tagline "
                 onChange={(e) => setGroupTag(e.target.value)}
               />
-            </Form.Group>
-            <Button
+            </div>
+            <button
               onClick={handleGroupSubmit}
-              className="createBtn"
+              className="searchBtn"
               type="submit"
             >
               Create Group
-            </Button>
-          </Form>
+            </button>
+          </form>
         </>
+      ) : groupList.length == 0 ? (
+        <h5 className="available">No Group Available</h5>
       ) : (
         groupList.map((item) => (
-          <div className="groupItem">
-            <picture>
-              <img src="images/groupImage.png" loading="lazy" />
-            </picture>
-            <div className="groupText">
-              <p>Admin : {item.adminName}</p>
-              <h3>{item.groupName}</h3>
-              <p>{item.groupTag}</p>
+          <div className="boxInnerItem">
+            <div className="boxInnerItemText">
+              <div className="boxInnerItemTextFlex">
+                <picture>
+                  <img src="images/groupImage.png" loading="lazy" />
+                </picture>
+                <div className="itemText">
+                  <p>Admin : {item.adminName}</p>
+                  <h5>{item.groupName}</h5>
+                  <p>{item.groupTag}</p>
+                </div>
+              </div>
             </div>
-            <div className="groupBtn">
-              <button onClick={() => handleJoin(item)} className="searchBtn">
-                Join
-              </button>
+            <div className="boxInnerItemBtn">
+              {groupList.includes(item.adminId + auth.currentUser.uid) ||
+              groupList.includes(auth.currentUser.uid + item.adminId) ? (
+                <button className="searchBtn">Joined</button>
+              ) : (
+                <button onClick={() => handleJoin(item)} className="searchBtn">
+                  Join
+                </button>
+              )}
             </div>
           </div>
         ))

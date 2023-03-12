@@ -85,6 +85,7 @@ const ForgotPassword = () => {
   let navigate = useNavigate();
   const [forgotEmail, setForgotEmail] = useState("");
   const [Ferror, setFerror] = useState("");
+  const [show, setShow] = useState(false);
 
   // forget password
 
@@ -111,36 +112,40 @@ const ForgotPassword = () => {
   return (
     <div className="registrationFrom">
       <ToastContainer position="top-center" autoClose={5000} />
-      <div className="innerBox loginInnerBox">
-        <div className="innerTextBox loginBox">
+      <div className="innerBox ">
+        <div className="innerTextBox ">
           <div className="innerText">
-            <h4 className="title-h">Login to your account!</h4>
+            <h4 className="title-h">Enter Your Email</h4>
           </div>
-          <Form>
-            <Form.Text className=" inputError">{Ferror}</Form.Text>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Control
-                className="from"
+          <form>
+            <p className=" inputError">{Ferror}</p>
+            <div className="input-gap" controlId="formBasicEmail">
+              <input
+                className="form-control"
                 type="email"
                 placeholder="Enter email "
                 onChange={(e) => setForgotEmail(e.target.value)}
               />
-            </Form.Group>
-            <Button
+            </div>
+          </form>
+          <div style={{ display: "flex" }}>
+            <button
               className="btn forgotBtn"
               onClick={handleForgotPassword}
               type="submit"
             >
               Upload
-            </Button>
-            <Button
-              className="btn forgotBtn"
-              onClick={handleForgotPassword}
-              type="submit"
-            >
-              Cancel
-            </Button>
-          </Form>
+            </button>
+            {!show && (
+              <button
+                className="btn forgotBtn"
+                type="submit"
+                onClick={() => setShow(show)}
+              >
+                Cancel
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -148,3 +153,45 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+
+{
+  /* {forgot && (
+        <div className="registrationFrom forgotPasswordForm">
+          <ToastContainer position="top-center" autoClose={5000} />
+          <div className="innerBox ">
+            <div className="innerTextBox ">
+              <div className="innerText">
+                <h4 className="title-h">Enter Your Email</h4>
+              </div>
+              <form>
+                <p className=" inputError">{Ferror}</p>
+                <div className="input-gap" controlId="formBasicEmail">
+                  <input
+                    className="form-control"
+                    type="email"
+                    placeholder="Enter email "
+                    // onChange={(e) => setForgotEmail(e.target.value)}
+                  />
+                </div>
+              </form>
+              <div style={{ display: "flex" }}>
+                <button
+                  className="btn forgotBtn"
+                  // onClick={handleForgotPassword}
+                  type="submit"
+                >
+                  Upload
+                </button>
+                <button
+                  className="btn forgotBtn"
+                  type="submit"
+                  onClick={() => setShow(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )} */
+}

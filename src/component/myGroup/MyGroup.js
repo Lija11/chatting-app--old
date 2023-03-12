@@ -92,97 +92,133 @@ const MyGroup = () => {
   };
 
   return (
-    <div className="friendRequest">
+    <div>
       <h2>My Group</h2>
       {showInfo ? (
         <>
-          <h4>member request info</h4>
-          <div className="groupBtn" style={{ marginRight: "10px" }}>
-            <button
-              onClick={() => setShowInfo(!showInfo)}
-              className="searchBtn"
-            >
-              Back
-            </button>
-          </div>
-          {memberRequest.map((item) => (
-            <div className="groupItem">
-              <picture>
-                <img src={item.userPhoto} loading="lazy" />
-              </picture>
-              <div className="groupText">
-                <h3>{item.userName}</h3>
-                <p>{item.groupTag}</p>
-              </div>
-              <div className="groupBtn" style={{ marginRight: "10px" }}>
-                <button
-                  onClick={() => handleMemberRequestAccept(item)}
-                  className="searchBtn"
-                >
-                  Accept
-                </button>
-              </div>
-              <div className="groupBtn">
-                <button
-                  onClick={() => handleReject(item)}
-                  className="searchBtn"
-                >
-                  Reject
-                </button>
-              </div>
+          <div className="infoDetails">
+            <h5>member request info</h5>
+            <div className="groupBtn" style={{ marginRight: "10px" }}>
+              <button
+                onClick={() => setShowInfo(!showInfo)}
+                className="searchBtn"
+              >
+                Back
+              </button>
             </div>
-          ))}
+          </div>
+          {groupList.length == 0 ? (
+            <h5 className="available">No Member Request Available</h5>
+          ) : (
+            memberRequest.map((item) => (
+              <div className="boxInnerItem">
+                <div className="boxInnerItemText">
+                  <div className="boxInnerItemTextFlex">
+                    <picture>
+                      <img src={item.userPhoto} loading="lazy" />
+                    </picture>
+                    <div className="itemText">
+                      <h5>{item.userName}</h5>
+                      <p>{item.groupTag}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="boxInnerItemBtn">
+                  <div className="groupBtn" style={{ marginRight: "10px" }}>
+                    <button
+                      onClick={() => handleMemberRequestAccept(item)}
+                      className="searchBtn"
+                    >
+                      Accept
+                    </button>
+                  </div>
+                  <div className="groupBtn">
+                    <button
+                      onClick={() => handleReject(item)}
+                      className="searchBtn"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </>
       ) : showMemberList ? (
         <div className="groupBtn" style={{ marginRight: "10px" }}>
-          <button
-            onClick={() => setShowMemberList(false)}
-            className="searchBtn"
-          >
-            Back
-          </button>
-          {memberList.map((item) => (
-            <div className="groupItem">
-              <picture>
-                <img src={item.userPhoto} loading="lazy" />
-              </picture>
-              <div className="groupText">
-                <h3>{item.userName}</h3>
-                <p>{item.groupTag}</p>
+          <div className="infoDetails">
+            <h5>Group Member List</h5>
+            <div className="groupBtn" style={{ marginRight: "10px" }}>
+              <button
+                onClick={() => setShowMemberList(false)}
+                className="searchBtn"
+              >
+                Back
+              </button>
+            </div>
+          </div>
+          {memberList.length == 0 ? (
+            <h5 className="available">No Member Available</h5>
+          ) : (
+            memberList.map((item) => (
+              <div className="boxInnerItem">
+                <div className="boxInnerItemTextFlex">
+                  <picture>
+                    <img src={item.userPhoto} loading="lazy" />
+                  </picture>
+                  <div className="boxInnerItemText myGroup">
+                    <h5>{item.userName}</h5>
+                    <p>{item.groupTag}</p>
+                  </div>
+                </div>
+                <div className="boxInnerItemBtn myGroupBtn">
+                  <div className="groupBtn">
+                    <button
+                      onClick={() => handleRemove(item)}
+                      className="searchBtn"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      ) : groupList.length == 0 ? (
+        <h5 className="available">No Group Available</h5>
+      ) : (
+        groupList.map((item) => (
+          <div className="boxInnerItem">
+            <div className="boxInnerItemText">
+              <div className="boxInnerItemTextFlex">
+                <picture>
+                  <img src="images/groupImage.png" loading="lazy" />
+                </picture>
+                <div className="itemText">
+                  <h5>{item.groupName}</h5>
+                  <p>{item.groupTag}</p>
+                </div>
+              </div>
+            </div>
+            <div className="boxInnerItemBtn">
+              <div className="groupBtn" style={{ marginRight: "10px" }}>
+                <button
+                  onClick={() => handleMemberRequestInfo(item)}
+                  className="searchBtn"
+                >
+                  Info
+                </button>
               </div>
               <div className="groupBtn">
                 <button
-                  onClick={() => handleRemove(item)}
                   className="searchBtn"
+                  onClick={() => handleMember(item)}
                 >
-                  Remove
+                  Member
                 </button>
               </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        groupList.map((item) => (
-          <div className="groupItem">
-            <picture>
-              <img src="images/groupImage.png" loading="lazy" />
-            </picture>
-            <div className="groupText">
-              <h3>{item.groupName}</h3>
-              <p>{item.groupTag}</p>
-            </div>
-            <div className="groupBtn" style={{ marginRight: "10px" }}>
-              <button
-                onClick={() => handleMemberRequestInfo(item)}
-                className="searchBtn"
-              >
-                Info
-              </button>
-            </div>
-            <div className="groupBtn">
-              <button className="searchBtn" onClick={() => handleMember(item)}>
-                Member
-              </button>
             </div>
           </div>
         ))

@@ -1,37 +1,119 @@
 .homePage {
   display: flex;
   justify-content: space-between;
-  /* padding-top: 50px; */
 }
 
-.sidebar {
+/* .sidebar {
   width: 186px;
-}
-
-/* .userItem {
-
+  height: 100vh;
 } */
 
 .groupRequest {
-  width: 28%;
+  width: 27%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.searchGroup {
-  padding: 30px;
+.homePageItemBox {
+  padding: 20px;
   border-radius: 10px;
-  height: 420px;
   background: linear-gradient(145deg, #1e2024, #23272b);
-  /* background-color: #202020; */
   box-shadow: 10px 10px 19px #1c1e22, -10px -10px 19px #262a2e;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   border-radius: 20px;
-  margin-top: 20px;
+  padding-top: 100px;
+}
+
+.scrollbarDesign {
+  width: 100% !important;
+  height: 48% !important;
 }
 
 .friends {
-  width: 28%;
+  width: 27%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .userList {
-  width: 28%;
+  width: 27%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mobileSidebar {
+  display: none;
+}
+.mobile-menu-icon {
+  display: none;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .homePage {
+    display: block;
+    height: 100% !important;
+  }
+  .scrollbarDesign {
+    height: 400px !important;
+    margin-top: 30px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1199px) {
+  .homePage {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    height: 100% !important;
+  }
+  .scrollbarDesign {
+    height: 400px !important;
+    margin-top: 30px;
+  }
+  .mobileSidebar {
+    display: block;
+  }
+  .mobile-menu-icon {
+    display: none;
+  }
+  .profileImg {
+    margin: 0 !important;
+  }
+  .profile h4 {
+    text-align: left;
+    padding-top: 10px;
+  }
+  .sidebar {
+    display: none !important;
+  }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+  .homePage {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) !important;
+    height: 100% !important;
+  }
+  .scrollbarDesign {
+    height: 400px !important;
+    margin-top: 30px;
+  }
+  .mobileSidebar {
+    display: block;
+  }
+  .mobile-menu-icon {
+    display: none;
+  }
+  .profileImg {
+    margin: 0 !important;
+  }
+  .profile h4 {
+    text-align: left;
+    padding-top: 10px;
+  }
+  .sidebar {
+    display: none !important;
+  }
 }

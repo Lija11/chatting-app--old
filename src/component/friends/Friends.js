@@ -81,22 +81,26 @@ const Friends = ({ block }) => {
   };
 
   return (
-    <div className="friendsList">
+    <div>
       <h2>Friends</h2>
       {friendList.map((item) => (
-        <div className="groupItem" onClick={() => handleActiveChat(item)}>
-          <picture>
-            <img src="images/groupImage.png" loading="lazy" />
-          </picture>
-          <div className="groupText">
-            {auth.currentUser.uid == item.senderId ? (
-              <h3>{item.recieverName}</h3>
-            ) : (
-              <h3>{item.senderName}</h3>
-            )}
-            <p>Hi Guys, Wassup!</p>
+        <div className="boxInnerItem" onClick={() => handleActiveChat(item)}>
+          <div className="boxInnerItemText">
+            <div className="boxInnerItemTextFlex">
+              <picture>
+                <img src="images/groupImage.png" loading="lazy" />
+              </picture>
+              <div className="itemText">
+                {auth.currentUser.uid == item.senderId ? (
+                  <h5>{item.recieverName}</h5>
+                ) : (
+                  <h5>{item.senderName}</h5>
+                )}
+                <p>Hi Guys, Wassup!</p>
+              </div>
+            </div>
           </div>
-          <div className="groupBtn">
+          <div className="boxInnerItemBtn">
             {block ? (
               <button onClick={() => handleBlock(item)} className="searchBtn">
                 Block

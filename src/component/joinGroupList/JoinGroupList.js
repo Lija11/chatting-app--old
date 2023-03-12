@@ -64,26 +64,49 @@ const JoinGroupList = () => {
         <h2>Joined Groups</h2>
       </div>
       {joinMyGroupList.map((item) => (
-        <div className="groupItem" onClick={() => handleActiveChat(item)}>
-          <picture>
-            <img src="images/groupImage.png" loading="lazy" />
-          </picture>
-          <div className="groupText">
-            <p>Admin : {item.adminName}</p>
-            <h3>{item.groupName}</h3>
-            <p>{item.groupTag}</p>
+        <div className="boxInnerItem" onClick={() => handleActiveChat(item)}>
+          <div className="boxInnerItemText">
+            <div className="boxInnerItemTextFlex">
+              <picture>
+                <img src="images/groupImage.png" loading="lazy" />
+              </picture>
+              <div className="itemText">
+                <p>Admin : {item.adminName}</p>
+                <h5>{item.groupName}</h5>
+                <p>{item.groupTag}</p>
+              </div>
+            </div>
+          </div>
+          <div className="boxInnerItemBtn ">
+            <div className="groupBtn">
+              <button className="searchBtn">
+                <i className="fa-solid fa-message"></i>
+              </button>
+            </div>
           </div>
         </div>
       ))}
+
       {joinGroupList.map((item) => (
-        <div className="groupItem" onClick={() => handleActiveChat(item)}>
-          <picture>
-            <img src="images/groupImage.png" loading="lazy" />
-          </picture>
-          <div className="groupText">
-            <p>Admin : {item.adminName}</p>
-            <h3>{item.groupName}</h3>
-            <p>{item.groupTag}</p>
+        <div className="boxInnerItem" onClick={() => handleActiveChat(item)}>
+          <div className="boxInnerItemText">
+            <div className="boxInnerItemTextFlex">
+              <picture>
+                <img src="images/groupImage.png" loading="lazy" />
+              </picture>
+              <div className="itemText">
+                <p>Admin : {item.adminName}</p>
+                <h5>{item.groupName}</h5>
+                <p>{item.groupTag}</p>
+              </div>
+            </div>
+          </div>
+          <div className="boxInnerItemBtn">
+            <div className="groupBtn">
+              <button className="searchBtn">
+                <i class="fa-solid fa-message"></i>
+              </button>
+            </div>
           </div>
         </div>
       ))}
