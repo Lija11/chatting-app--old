@@ -258,8 +258,7 @@ input::placeholder {
     font-size: 18px;
   }
   .registrationFrom {
-    height: 100%;
-    margin-top: 50px;
+    height: 100vh;
   }
 }
 
